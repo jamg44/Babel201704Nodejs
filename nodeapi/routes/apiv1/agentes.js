@@ -7,11 +7,33 @@ const mongoose = require('mongoose');
 // Le pedimos a mongoose el modelo de Agente
 const Agente = mongoose.model('Agente');
 
+const basicAuth = require('../../lib/basicAuth');
+router.use(basicAuth('admin', 'god'));
+
+
 // GET /apiv1/agentes
 router.get('/', (req, res, next) => {
 
+  // Recogemos parámetros de búsqueda
+  const name = req.query.name;
+  const age = req.query.age;
+  const limit = parseInt(req.query.limit);
+  const skip = parseInt(req.query.skip);
+  const select = req.query.select;
+  const sort = req.query.sort;
+
+  const criterios = {};
+
+  if (name) {
+    criterios.name = name;
+  }
+
+  if (age) {
+    criterios.age = age;
+  }
+
   // recuperamos una lista de agentes
-  Agente.list((err, agentes) => {
+  Agente.list(criterios, limit, skip, select, sort, (err, agentes) => {
     if (err) {
       next(err);
       return;

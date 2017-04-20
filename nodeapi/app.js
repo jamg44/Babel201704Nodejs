@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 // conectamos a la base de datos
 require('./lib/connectMongoose');
 require('./models/Agente');
+require('./models/Usuario');
 
 var app = express();
 
@@ -40,9 +41,11 @@ app.use(function(req,res, next) {
   next();
 });
 
+
 // Rutas de la aplicación
 app.use('/',              require('./routes/index'));
 app.use('/apiv1/agentes', require('./routes/apiv1/agentes'));
+app.use('/apiv1/usuarios', require('./routes/apiv1/usuarios'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
