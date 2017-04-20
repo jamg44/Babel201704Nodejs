@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -5,6 +6,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+// conectamos a la base de datos
+require('./lib/connectMongoose');
+require('./models/Agente');
 
 var app = express();
 
@@ -36,7 +40,9 @@ app.use(function(req,res, next) {
   next();
 });
 
-app.use('/',        require('./routes/index'));
+// Rutas de la aplicación
+app.use('/',              require('./routes/index'));
+app.use('/apiv1/agentes', require('./routes/apiv1/agentes'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
