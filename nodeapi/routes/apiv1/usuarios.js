@@ -6,6 +6,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Usuario = mongoose.model('Usuario');
 const jwt = require('jsonwebtoken');
+const config = require('../../config');
 
 router.post('/login', (req, res, next) => {
   // recibimos credenciales
@@ -30,9 +31,8 @@ router.post('/login', (req, res, next) => {
     }
 
     // creamos un token JWT
-    jwt.sign({ usuario_id: usuario._id}, 'jkdsfhsdkflhsdkjfhskdjfhsdklfhdskj', {
-      expiresIn: '2d'
-    }, (err, token) => {
+    jwt.sign({ usuario_id: usuario._id}, config.jwtSecret, config.jwtConfig, 
+    (err, token) => {
       if (err) {
         next(err);
         return;
